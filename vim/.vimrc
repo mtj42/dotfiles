@@ -12,8 +12,8 @@ set expandtab
 set tabstop=4
 set softtabstop=4
 set nu
-set backspace=2 " Fix backspace key because it's being dumb
-"set textwidth=80 " Word-wrap
+set backspace=2 " Fix backspace key; forget why this is needed
+" set textwidth=80 " Word-wrap
 " set breakindent
 set ruler
 
@@ -21,10 +21,8 @@ let mapleader=","
 
 " inoremap <Esc> <nop> " cruel and unnecessary
 inoremap jj <Esc>
-inoremap jk <Esc>
-inoremap kj <Esc>
 
-" Fix paste bug triggered by the above inoremaps
+" Don't really know why I need this but it fixes a paste bug caused by the inoremap
 set t_BE=
 
 noremap j gj
@@ -39,11 +37,11 @@ noremap : ;
 
 " nnoremap <leader>p ofrom IPython import embed; embed()<ESC>
 
-" Yank from Vim into system 
+" Copy highlighted text to system clipboard
 map <silent> <C-c> ;call CopyVisual()<CR>
 " nnoremap <C-c> "+y
 
-" paste
+" Paste from system clipboard with Ctrl+p
 nmap <C-p> ;call ToggleAndPaste()<CR>
 
 " vim-markdown-folding
@@ -51,32 +49,23 @@ nnoremap <Space> za
 nnoremap <C-m> zMzv
 
 
-" auto-format JSON
+" auto-format JSON with ;json
 nmap <Leader>json ;%!python -m json.tool<CR>
 
-" auto-format XML
+" auto-format XML with ;XML
 nmap <Leader>xml ;%!xmllint --format %<CR>
-
-
-" delete trailing whitespace
-" nmap <Leader>ws :%s/\s\+$//<CR>
-
-" replace multiple spaces with single space in current selection
-" vmap <Leader>wo :s![^ ]\zs  \+! !g<CR>
-
-" NERDTree
-" nmap <Leader>nt :NERDTreeToggle<CR>
 
 " Two space tab for html
 autocmd FileType html,css,js,jsx setlocal shiftwidth=2 tabstop=2 softtabstop=2
 autocmd FileType md setlocal syntax=OFF
 
+" Copy highlighted text to clipboard
 function! CopyVisual()
     normal gv"cy
     :call system('pbcopy', @c)
 endfunction
 
-" Thank you @dkaman for this function
+" Paste from system clipboard
 function! ToggleAndPaste()
     set paste
     put +
